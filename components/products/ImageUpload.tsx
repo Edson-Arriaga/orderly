@@ -18,7 +18,7 @@ export default function ImageUpload({image} : {image: string | undefined}) {
                     setImageUrl(result.info?.secure_url)
                 }
             }}
-            uploadPreset='ml_default'
+            uploadPreset='image_product_upload'
             options={{
                 maxFiles: 1,
                 validateMaxWidthHeight: true
