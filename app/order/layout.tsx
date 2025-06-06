@@ -5,7 +5,7 @@ import ToastNotification from "@/components/ui/ToastNotification";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <>
-            <div className="md:flex">
+            <div className="md:flex overflow-hidden">
                 <OrderSidebar />
 
                 <main className="md:flex-1 md:h-screen md:overflow-scroll p-5">
