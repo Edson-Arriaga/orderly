@@ -1,12 +1,7 @@
 "use client";
 
-import { prisma } from "@/src/lib/prisma"
 import ImageUpload from "./ImageUpload"
 import { Category, Product } from "@prisma/client"
-
-async function getCategories(){
-    return await prisma.category.findMany()
-}
 
 type ProductsFormProps = {
     product?: Product,
