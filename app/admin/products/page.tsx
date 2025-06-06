@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ProductSearchForm from "@/components/products/ProductSearchForm";
 import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductTable from "@/components/products/ProductsTable";
