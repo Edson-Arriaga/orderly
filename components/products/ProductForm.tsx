@@ -8,7 +8,7 @@ type ProductsFormProps = {
     categories?: Category[]
 }
 
-export default async function ProductForm({product, categories} : ProductsFormProps) {
+export default function ProductForm({product, categories} : ProductsFormProps) {
     return (
         <>
             <div className="space-y-2">
