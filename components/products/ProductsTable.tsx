@@ -1,9 +1,32 @@
+"use client";
+
 import { ProductsWithCategory } from "@/app/admin/products/page"
 import { formatCurrency } from "@/src/utils"
 import Link from "next/link"
 
 type ProductTableProps = {
-    products: ProductsWithCategory
+    products: ProductsWithCategory,
+}
+
+async function handleDeleteProduct(id: number) {
+  const confirmDelete = confirm("¿Estás seguro de eliminar este producto?");
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || "Error al eliminar");
+    }
+    
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("Hubo un error al eliminar el producto");
+  }
 }
 
 export default function ProductTable({products} : ProductTableProps) {
@@ -24,8 +47,8 @@ export default function ProductTable({products} : ProductTableProps) {
                                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Categoría
                                     </th>
-                                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                                        <span className="sr-only">Acciones</span>
+                                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0 text-right">
+                                        <span className="text-center mx-auto">Acciones</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -41,12 +64,16 @@ export default function ProductTable({products} : ProductTableProps) {
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                             {product.category.name}
                                         </td>
-                                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 gap-10 flex justify-end">
                                             <Link
                                                 href={`/admin/products/${product.id}/edit`}
                                                 className="text-indigo-600 hover:text-indigo-800"
                                             >Editar <span className="sr-only">, {product.name}</span></Link>
-                                        </td>
+                                            <button
+                                                onClick={() => handleDeleteProduct(product.id)}
+                                                className="text-red-600 hover:text-indigo-800"
+                                            >Eliminar <span className="sr-only">, {product.name}</span></button>
+                                        </td>      
                                     </tr>
                                 ))}
                             </tbody>

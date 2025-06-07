@@ -4,6 +4,7 @@ import ProductSearchForm from "@/components/products/ProductSearchForm";
 import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductTable from "@/components/products/ProductsTable";
 import Heading from "@/components/ui/Heading";
+import ToastNotification from "@/components/ui/ToastNotification";
 import { prisma } from "@/src/lib/prisma";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -15,9 +16,7 @@ async function productCount(){
 async function getProducts(page: number, pageSize: number) {
     const skip = (page - 1) * pageSize
     const products = prisma.product.findMany({
-        //Limit of the Query
         take: pageSize,
-        //Settle the registers that will be omitted
         skip,
         include: {
             category: true
@@ -63,6 +62,8 @@ export default async function ProductsPage({searchParams} : {searchParams: {page
                 page={page}
                 totalPages={totalPages}
             />
+
+            <ToastNotification />
         </>
     )
 }
