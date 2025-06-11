@@ -7,12 +7,14 @@ import { formatCurrency } from "@/src/utils"
 import { createOrder } from "@/actions/create-order-action"
 import { OrderSchema } from "@/src/schema"
 import { toast } from "react-toastify"
+import { useTransition } from "react"
 
 export default function OrderSummary() {
     
     const order = useStore(state => state.order)
     const clearOrder = useStore(state => state.clearOrder)
     const total = useMemo(() => order.reduce((total, curr) => total + curr.subtotal, 0), [order])
+    const [isPending, startTransition] = useTransition()
     
     const handleCreateOrder = async (formData: FormData) => {
         const data = {
@@ -61,9 +63,13 @@ export default function OrderSummary() {
                         <span className="font-bold">{formatCurrency(total)}</span>
                     </p>
                     
-                    <form 
+                    <form
                         className="w-full mt-10 space-y-5"
-                        action={handleCreateOrder}
+                        action={(formData) => {
+                            startTransition(() => {
+                                handleCreateOrder(formData)
+                            })
+                        }}
                     >
                         <input 
                             type="text" 
@@ -73,9 +79,10 @@ export default function OrderSummary() {
                         />
 
                         <input
-                            type="submit" 
-                            className="py-2 rounded uppercase text-white bg-black w-full text-center cursor-pointer font-bold"
-                            value="Confirmar Pedido"
+                            type="submit"
+                            disabled={isPending}
+                            className="py-2 rounded uppercase text-white bg-black w-full text-center cursor-pointer font-bold disabled:opacity-50"
+                            value={isPending ? "Procesando..." : "Confirmar Pedido"}
                         />
                     </form>
 
