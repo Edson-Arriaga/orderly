@@ -13,6 +13,7 @@ export async function GET(){
             }
         }
     })
-
+    console.log('INICIANDO')
+    console.log(orders)
     return Response.json(orders)
 }
