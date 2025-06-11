@@ -6,6 +6,7 @@ import Heading from "@/components/ui/Heading"
 import { prisma } from "@/src/lib/prisma"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { Category } from "@prisma/client"
 
 async function getProductById(id: number){
     const product = await prisma.product.findUnique({
@@ -23,6 +24,14 @@ async function getProductById(id: number){
 
 export default async function EditProductsPage({params} : {params : {id : string}}) {
     
+    let categories : Category[] = [];
+
+    try {
+        categories = await prisma.category.findMany();
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+
     const product = await getProductById(+params.id)
 
     return (
@@ -37,6 +46,7 @@ export default async function EditProductsPage({params} : {params : {id : string
             <EditProductForm>
                 <ProductForm 
                     product={product}
+                    categories={categories}
                 />
             </EditProductForm>
         </>

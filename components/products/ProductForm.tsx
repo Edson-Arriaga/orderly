@@ -34,6 +34,7 @@ export default function ProductForm({product, categories} : ProductsFormProps) {
                 <input
                     id="price"
                     name="price"
+                    type="number"
                     className="block w-full p-3 bg-slate-100"
                     placeholder="Precio Producto"
                     defaultValue={product?.price}
